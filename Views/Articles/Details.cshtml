@@ -1,0 +1,28 @@
+﻿<style>
+    img {
+        max-width: 100%; /* Set your maximum width here */
+        max-height: auto; /* Set your maximum height here */
+    }
+
+    .cover {
+        width: 500px;
+        height: auto;
+    }
+</style>
+
+ @model NewsApp.Models.Article
+
+<h2>@Model.Title</h2>
+
+<p>Published on: @Model.DateTime</p>
+
+<p>@Model.Content</p>
+
+<p>Author: @Model.User?.Name</p>
+
+@if (Model.Photo != null)
+{
+    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Photo.ImageData)" alt="Article Photo" />
+}
+
+<p><a asp-action="Index">Back to Articles</a></p>
