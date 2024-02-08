@@ -40,7 +40,7 @@ namespace NewsApp.Controllers
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Articles");
             }
 
             return View(user);
@@ -48,38 +48,16 @@ namespace NewsApp.Controllers
 
         // POST: /Account/Login
         [HttpPost]
-        /*public ActionResult Login(string username, string password)
-        {
-            var user = _context.Users.FirstOrDefault(u => u.Name == username && u.Password == Utility.Hash(password));
-
-            if (user != null)
-            {
-                // Create a session
-                HttpContext.Session.SetInt32("UserId", user.UID);
-                HttpContext.Session.SetString("Username", user.Name);
-                return RedirectToAction("Index", "Home"); // Redirect to the home page or any other page
-            }
-            else
-            {
-                ViewBag.ErrorMessage = "Invalid username or password";
-
-                return View();
-            }
-        }*/
-
-        //type2
-
         public async Task<IActionResult> Login([Bind("Name,Password")] User user)
         {
             var authenticatedUser = _context.Users.FirstOrDefault(u => u.Name == user.Name && u.Password == Utility.Hash(user.Password));
 
             if (authenticatedUser != null)
             {
-                // Create a session with the correct user ID
                 HttpContext.Session.SetInt32("UserId", authenticatedUser.UID);
                 HttpContext.Session.SetString("Username", authenticatedUser.Name);
 
-                return RedirectToAction("Index", "Home"); // Redirect to the home page or any other page
+                return RedirectToAction("Index", "Articles"); // Redirect to the home page or any other page
             }
             else
             {

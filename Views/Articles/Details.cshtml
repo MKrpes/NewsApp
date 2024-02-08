@@ -14,15 +14,17 @@
 
 <h2>@Model.Title</h2>
 
-<p>Published on: @Model.DateTime</p>
+<p>Published on: @Model.DateTime</p> <p>Author: @Model.User?.Name</p>
 
 <p>@Model.Content</p>
 
-<p>Author: @Model.User?.Name</p>
+
 
 @if (Model.Photo != null)
 {
+    <div class="cover">
     <img src="data:image/png;base64,@Convert.ToBase64String(Model.Photo.ImageData)" alt="Article Photo" />
+    </div>
 }
 
 <p><a asp-action="Index">Back to Articles</a></p>

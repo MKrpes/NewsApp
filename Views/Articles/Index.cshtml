@@ -2,57 +2,53 @@
 @{
     ViewData["Title"] = "Index";
 }
+@{
+    int? userId = Context.Session.GetInt32("UserId");
+}
 
-<h1>Index</h1>
+<style>
+    img {
+        max-width: 100%; /* Set your maximum width here */
+        max-height: auto; /* Set your maximum height here */
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    .cover {
+        width: 400px;
+        height: auto;
+    }
+</style>
+
+<h1>News</h1>
+@if(userId.HasValue)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <table class="table">
-    @* <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead> *@
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-       @*  <a asp-action="Details" asp-route-id="@item.ID">
+        @foreach (var item in Model.OrderByDescending(Article => Article.DateTime))
+        {
+    <tr>
+  
         <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
+            <a asp-action="Details" asp-route-id="@item.ID">
+                <h4>@Html.DisplayFor(modelItem => item.Title)</h4>
+                @if (item.PID != null){
+                    <div class="cover">
+                        <img src="data:image/png;base64,@Convert.ToBase64String(item.Photo.ImageData)" alt="Article Photo" />
+                    </div>
+                }
                 @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.User.Name)
-            </td>
-        </a>
-            <td> *@
-                
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.ID">
-                        @Html.DisplayFor(modelItem => item.Title)
-               
-                        @Html.DisplayFor(modelItem => item.DateTime)
-               
-                        @Html.DisplayFor(modelItem => item.User.Name)
-                </a>
-                <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-               @*  <a asp-action="Details" asp-route-id="@item.ID">Details</a> | *@
+            </a>
+        <td>
+            @if (userId.HasValue)
+            {
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
+            }
+        </td>
+    </tr>
 }
     </tbody>
 </table>
